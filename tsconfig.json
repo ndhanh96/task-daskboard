@@ -20,8 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],  // Alias: import as '@/components/MyComponent'
-      "@components/*": ["src/components/*"],  // Optional: More specific aliases
+      "@/*": ["./*"], // Alias: import as '@/components/MyComponent'
+      "@components/*": ["src/components/*"], // Optional: More specific aliases
       "@lib/*": ["lib/*"]
     }
   },

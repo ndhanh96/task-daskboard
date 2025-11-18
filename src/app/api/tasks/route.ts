@@ -1,6 +1,5 @@
 // app/api/tasks/route.ts
-import type { NextApiRequest, NextApiResponse } from "next"; // Wait, App Router uses NextRequest/Response
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server"; // App Router purity—no Pages ghosts
 import { addTask, deleteTask, getAllTasks, updateTask } from "@/lib/db";
 import { Task } from "@/lib/tasks";
 
