@@ -1,23 +1,22 @@
 // 'use server';
-import React from "react";
 import { TaskStatus } from "@/lib/tasks";
 import axios from "axios";
 
 interface NewTaskFormValues {
-  tasktitle: string;
+  title: string;
   description: string;
   status: TaskStatus;
 }
 
 export const addNewTask = async ({
-  tasktitle,
+  title,
   description,
   status,
 }: NewTaskFormValues) => {
   const payload = {
-    title: tasktitle,
+    title,
     description,
-    status: status,
+    status,
     dueDate: new Date().toISOString(),
   };
   try {

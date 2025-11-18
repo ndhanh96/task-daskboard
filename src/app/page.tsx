@@ -1,5 +1,5 @@
 "use client";
-import { Button, Typography, Space } from "antd";
+import { Typography, Space } from "antd";
 import TaskTable from "@/components/TaskTable";
 import { Task } from "@/lib/tasks";
 import "@ant-design/v5-patch-for-react-19";
@@ -8,15 +8,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const { Title } = Typography;
-
-// Dummy functions: Log for now (replace with real logic later)
-const handleEdit = (task: Task) => {
-  console.log("Editing task:", task);
-};
-
-const handleDelete = (id: number) => {
-  console.log("Deleting task ID:", id);
-};
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -51,7 +42,7 @@ export default function Home() {
           <NewTaskModal />
         </div>
 
-        <TaskTable tasks={tasks} onEdit={handleEdit} />
+        <TaskTable tasks={tasks} />
       </Space>
     </main>
   );

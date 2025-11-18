@@ -64,7 +64,7 @@ function CurrentTaskModal({ id, title, description, status }: Task) {
       >
         <Form
           form={CurrentTaskModalForm}
-          name="current-task"
+          name={`current-task-${id}`}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           style={{ maxWidth: 600 }}
@@ -86,7 +86,7 @@ function CurrentTaskModal({ id, title, description, status }: Task) {
               { required: true, message: "please input your description" },
             ]}
           >
-            <Input value={description} />
+            <Input />
           </Form.Item>
           <Form.Item label="Status" name="status" rules={[{ required: true }]}>
             <Select>

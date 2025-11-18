@@ -8,7 +8,7 @@ import { PlusOutlined } from "@ant-design/icons";
 function NewTaskModal() {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [form] = Form.useForm();
+  const [NewTaskModalForm] = Form.useForm();
 
   const showModal = () => {
     setOpen(true);
@@ -18,12 +18,10 @@ function NewTaskModal() {
     setConfirmLoading(true);
 
     try {
-      const values = await form.validateFields();
-      //   console.log(values);
+      const values = await NewTaskModalForm.validateFields();
       try {
-        const res = await addNewTask(values);
-        console.log(res);
-        form.resetFields();
+        await addNewTask(values);
+        NewTaskModalForm.resetFields();
       } catch (error) {
         throw error;
       }
@@ -58,9 +56,10 @@ function NewTaskModal() {
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
+        destroyOnHidden
       >
         <Form
-          form={form}
+          form={NewTaskModalForm}
           name="new-task"
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
@@ -70,8 +69,8 @@ function NewTaskModal() {
         >
           {/* Form fields for task details can be added here */}
           <Form.Item
-            label="Task Title"
-            name="tasktitle"
+            label="Title"
+            name="title"
             rules={[{ required: true, message: "please input title" }]}
           >
             <Input />
