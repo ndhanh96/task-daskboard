@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 import updateTask from "./updateTask";
 import { Task } from "@/lib/tasks";
+import dayjs from "dayjs";
 
-function CurrentTaskModal({ id, title, description, status }: Task) {
+function CurrentTaskModal({ id, title, description, status, dueDate }: Task) {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [CurrentTaskModalForm] = Form.useForm();
@@ -18,10 +19,8 @@ function CurrentTaskModal({ id, title, description, status }: Task) {
 
     try {
       const values = await CurrentTaskModalForm.validateFields();
-      console.log({ ...values, id });
       try {
-        const res = await updateTask({ ...values, id });
-        console.log(res);
+        await updateTask({ ...values, id });
         CurrentTaskModalForm.resetFields();
       } catch (error) {
         throw error;
@@ -43,11 +42,12 @@ function CurrentTaskModal({ id, title, description, status }: Task) {
 
   useEffect(() => {
     CurrentTaskModalForm.setFieldsValue({
-      title: title,
+      title,
       description,
       status,
+      dueDate: dayjs(dueDate),
     });
-  }, [CurrentTaskModalForm, title, description, status]);
+  }, [CurrentTaskModalForm, title, description, status, dueDate]);
 
   return (
     <>
@@ -94,6 +94,13 @@ function CurrentTaskModal({ id, title, description, status }: Task) {
               <Select.Option value="in_progress">In Progress</Select.Option>
               <Select.Option value="completed">Completed</Select.Option>
             </Select>
+          </Form.Item>
+          <Form.Item
+            label="Due Date"
+            name="dueDate"
+            rules={[{ required: true }]}
+          >
+            <DatePicker style={{ width: "100%" }} format="DD/MM/YYYY" />
           </Form.Item>
         </Form>
       </Modal>

@@ -7,10 +7,10 @@ const db = new Database("tasks.db", {
   strict: true,
   safeIntegers: true,
 }); // Create if absent, strict params, safe bigints
-db.exec("PRAGMA journal_mode = WAL;"); // WAL for concurrency supremacy
+db.run("PRAGMA journal_mode = WAL;"); // WAL for concurrency supremacy
 
 // Create table if not exists - like MySQL schema
-db.exec(`
+db.run(`
   CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
@@ -29,7 +29,7 @@ export function getAllTasks(): Task[] {
     title: row.title as string,
     description: row.description as string | undefined,
     status: row.status as TaskStatus,
-    dueDate: row.dueDate ? row.dueDate : undefined,
+    dueDate: row.dueDate as string,
   }));
 }
 

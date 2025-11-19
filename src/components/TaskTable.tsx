@@ -47,7 +47,9 @@ export default function TaskTable({ tasks }: TaskTableProps) {
       dataIndex: "dueDate",
       key: "dueDate",
       render: (dueDate?: string) =>
-        dueDate ? new Date(dueDate).toLocaleDateString() : "N/A",
+        dueDate
+          ? new Intl.DateTimeFormat("en-GB").format(new Date(dueDate))
+          : "N/A",
     },
     {
       title: "Actions",

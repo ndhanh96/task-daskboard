@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Modal, Select } from "antd";
-import { addNewTask } from "./AddNewTask";
+import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
+import { addNewTask } from "./addNewTask";
 import { PlusOutlined } from "@ant-design/icons";
 
 // For TypeScript: Define the shape of your form values
@@ -20,7 +20,12 @@ function NewTaskModal() {
     try {
       const values = await NewTaskModalForm.validateFields();
       try {
-        await addNewTask(values);
+        await addNewTask({
+          ...values,
+          dueDate: values.dueDate
+            ? values.dueDate.toISOString()
+            : new Date().toISOString(),
+        });
         NewTaskModalForm.resetFields();
       } catch (error) {
         throw error;
@@ -90,6 +95,13 @@ function NewTaskModal() {
               <Select.Option value="in_progress">In Progress</Select.Option>
               <Select.Option value="completed">Completed</Select.Option>
             </Select>
+          </Form.Item>
+          <Form.Item
+            label="Due Date"
+            name="dueDate"
+            rules={[{ required: true }]}
+          >
+            <DatePicker style={{ width: "100%" }} format="DD/MM/YYYY" />
           </Form.Item>
         </Form>
       </Modal>

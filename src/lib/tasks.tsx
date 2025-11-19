@@ -11,5 +11,5 @@ export interface Task {
   title: string; // Short title
   description?: string; // Optional longer description
   status: TaskStatus; // Use enum for type safety
-  dueDate?: string; // Optional due date (can be string if serialized)
+  dueDate: string; // Optional due date (can be string if serialized)
 }

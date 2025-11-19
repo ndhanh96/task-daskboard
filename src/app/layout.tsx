@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ConfigProvider } from "antd";
 
-import '@ant-design/v5-patch-for-react-19';
+import "@ant-design/v5-patch-for-react-19";
 
 export const metadata: Metadata = {
   title: "Task Dashboard",
