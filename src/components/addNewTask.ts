@@ -1,6 +1,6 @@
 // 'use server';
+import { addTaskAction } from "@/lib/db";
 import { Task } from "@/lib/tasks";
-import axios from "axios";
 
 type NewTaskFormValues = Omit<Task, "id">;
 
@@ -16,10 +16,15 @@ export const addNewTask = async ({
     status,
     dueDate,
   };
+
   try {
-    const res = await axios.post("/api/tasks", payload);
-    return res;
-  } catch (error) {
-    throw error;
+    await addTaskAction({
+      ...payload,
+      dueDate: payload.dueDate
+        ? new Date(payload.dueDate).toISOString()
+        : new Date().toISOString(),
+    });
+  } catch (errorInfo) {
+    console.log("Validation failed:", errorInfo);
   }
 };

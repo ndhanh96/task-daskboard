@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useTransition } from "react";
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
-import { addNewTask } from "./addNewTask";
 import { PlusOutlined } from "@ant-design/icons";
+import { addNewTask } from "./addNewTask";
 
 // For TypeScript: Define the shape of your form values
 
 function NewTaskModal() {
+  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  // const [confirmLoading, setConfirmLoading] = useState(false);
   const [NewTaskModalForm] = Form.useForm();
 
   const showModal = () => {
@@ -15,28 +17,16 @@ function NewTaskModal() {
   };
 
   const handleOk = async () => {
-    setConfirmLoading(true);
-
+    // setConfirmLoading(true);
     try {
       const values = await NewTaskModalForm.validateFields();
-      try {
-        await addNewTask({
-          ...values,
-          dueDate: values.dueDate
-            ? values.dueDate.toISOString()
-            : new Date().toISOString(),
-        });
+      startTransition(async () => {
+        await addNewTask(values); // Mutates + revalidates
         NewTaskModalForm.resetFields();
-      } catch (error) {
-        throw error;
-      }
-
-      setConfirmLoading(false);
-      setOpen(false);
+        setOpen(false); // Close modal
+      });
     } catch (errorInfo) {
-      // If validation fails, antd shows errors automatically
       console.log("Validation failed:", errorInfo);
-      setConfirmLoading(false); // Stop loading if failed
     }
   };
 
@@ -59,7 +49,7 @@ function NewTaskModal() {
         title="Add New Task"
         open={open}
         onOk={handleOk}
-        confirmLoading={confirmLoading}
+        confirmLoading={isPending}
         onCancel={handleCancel}
         destroyOnHidden
       >

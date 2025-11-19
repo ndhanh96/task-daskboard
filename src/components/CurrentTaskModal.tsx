@@ -1,37 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
-import updateTask from "./updateTask";
 import { Task } from "@/lib/tasks";
 import dayjs from "dayjs";
+import { updateTaskAction } from "@/lib/db";
 
 function CurrentTaskModal({ id, title, description, status, dueDate }: Task) {
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   const [CurrentTaskModalForm] = Form.useForm();
+  const [isPending, startTransition] = useTransition();
 
   const showModal = () => {
     setOpen(true);
   };
 
   const handleOk = async () => {
-    setConfirmLoading(true);
-
     try {
       const values = await CurrentTaskModalForm.validateFields();
-      try {
-        await updateTask({ ...values, id });
-        CurrentTaskModalForm.resetFields();
-      } catch (error) {
-        throw error;
-      }
-
-      setConfirmLoading(false);
+      startTransition(async () => {
+        try {
+          await updateTaskAction(id, values); // Mutates + revalidates
+          CurrentTaskModalForm.resetFields();
+        } catch (error) {
+          console.log("Update failed:", error);
+        }
+      });
       setOpen(false);
     } catch (errorInfo) {
       // If validation fails, antd shows errors automatically
       console.log("Validation failed:", errorInfo);
-      setConfirmLoading(false); // Stop loading if failed
     }
   };
 
@@ -55,12 +52,12 @@ function CurrentTaskModal({ id, title, description, status, dueDate }: Task) {
         Edit
       </Button>
       <Modal
-        forceRender
         title="Edit Current Task"
         open={open}
         onOk={handleOk}
-        confirmLoading={confirmLoading}
+        confirmLoading={isPending}
         onCancel={handleCancel}
+        destroyOnHidden
       >
         <Form
           form={CurrentTaskModalForm}

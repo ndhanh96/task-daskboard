@@ -1,11 +1,11 @@
 // src/components/TaskTable.tsx
 "use client"; // Needed for Ant interactivity
 
-import { Table, Button, Tag } from "antd";
+import { Table, Tag } from "antd";
 import { TaskStatus, type Task } from "@/lib/tasks"; // Assuming your types.ts path
 import { useEffect, useState } from "react";
-import deleteTask from "./deleteTask";
 import CurrentTaskModal from "./CurrentTaskModal";
+import DeleteTask from "./DeleteTask";
 
 interface TaskTableProps {
   tasks: Task[];
@@ -57,9 +57,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
       render: (_: unknown, record: Task) => (
         <>
           <CurrentTaskModal {...record} />
-          <Button onClick={() => deleteTask(record.id)} danger>
-            Delete
-          </Button>
+          <DeleteTask id={record.id} />
         </>
       ),
     },
