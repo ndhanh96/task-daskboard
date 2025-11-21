@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ConfigProvider } from "antd";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 import "@ant-design/v5-patch-for-react-19";
 
@@ -25,7 +26,7 @@ export default function RootLayout({
             },
           }}
         >
-          {children}
+          <AntdRegistry>{children}</AntdRegistry>
         </ConfigProvider>
       </body>
     </html>

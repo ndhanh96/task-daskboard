@@ -36,6 +36,7 @@ function NewTaskModal({
 
   const handleCancel = () => {
     console.log("Clicked cancel button");
+    NewTaskModalForm.resetFields();
     setOpen(false);
   };
 
